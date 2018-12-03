@@ -21,11 +21,11 @@ class NewPeriodClosureConsistencyCheck extends HBaseConnectionManager with Paths
   lazy val testDir = "newperiod"
 
   object MockClosure extends AssembleUnitsClosure with MockDataReader{
-    override val hbaseDao = MockCreateNewPeriodHBaseDao
+    override val hbaseDao: MockCreateNewPeriodHBaseDao.type = MockCreateNewPeriodHBaseDao
   }
 
   val appConfs = AppParams(
-    (Array[String](
+    Array[String](
       "LINKS", "ons", "l", linkHfilePath,
       "LEU", "ons", "d", leuHfilePath,
       "ENT", "ons", "d",entHfilePath,
@@ -40,7 +40,7 @@ class NewPeriodClosureConsistencyCheck extends HBaseConnectionManager with Paths
       vatFilePath,
       "local",
       "add-calculated-period"
-    )))
+    ))
 
 
 /*  "dummy tests" should{
@@ -51,13 +51,13 @@ class NewPeriodClosureConsistencyCheck extends HBaseConnectionManager with Paths
 
   }*/
 
-  override def beforeAll() = {
+  override def beforeAll(): Unit = {
     implicit val spark: SparkSession = SparkSession.builder().master("local[4]").appName("enterprise assembler").getOrCreate()
     conf.set("hbase.zookeeper.quorum", "localhost")
     conf.set("hbase.zookeeper.property.clientPort", "2181")
     withHbaseConnection { implicit connection:Connection =>
         createRecords(appConfs)
-        ParquetDao.jsonToParquet(jsonFilePath)(spark, appConfs)
+        ParquetDao.jsonToParquet(jsonFilePath)(spark)
           //val existingDF = readEntitiesFromHFile[HFileRow](existingRusRecordHFiles).collect
 
         MockClosure.createUnitsHfiles(appConfs)(spark, connection)
@@ -65,7 +65,7 @@ class NewPeriodClosureConsistencyCheck extends HBaseConnectionManager with Paths
     spark.stop
   }
 
-  override def afterAll() = {
+  override def afterAll(): Unit = {
     File(parquetPath).deleteRecursively()
     File(linkHfilePath).deleteRecursively()
     File(leuHfilePath).deleteRecursively()
@@ -92,7 +92,7 @@ class NewPeriodClosureConsistencyCheck extends HBaseConnectionManager with Paths
   }
 
 
-  def createRecords(appconf:AppParams)(implicit spark: SparkSession,connection:Connection) = {
+  def createRecords(appconf:AppParams)(implicit spark: SparkSession,connection:Connection): Unit = {
     saveLinksToHFile(existingLinksForAddNewPeriodScenarion,appconf.HBASE_LINKS_COLUMN_FAMILY, appconf, existingLinksRecordHFiles)
     saveToHFile(existingLousForNewPeriodScenario,appconf.HBASE_LOCALUNITS_COLUMN_FAMILY, appconf, existingLousRecordHFiles)
     saveToHFile(existingRusForNewPeriodScenario,appconf.HBASE_REPORTINGUNITS_COLUMN_FAMILY, appconf, existingRusRecordHFiles)

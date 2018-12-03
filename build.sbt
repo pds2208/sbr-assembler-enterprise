@@ -14,11 +14,12 @@ lazy val Versions = new {
 }
 
 resolvers += "ClouderaRepo" at "https://repository.cloudera.com/artifactory/cloudera-repos"
-resolvers += "Local Maven Repository" at "file:///Users/georgerushton/.m2/repository"
+resolvers += "Local Maven Repository" at "file:///home/paul/.m2/repository"
 resolvers += Resolver.bintrayRepo("ons", "ONS-Registers")
 
 libraryDependencies ++= Seq(
   "uk.gov.ons" % "registers-sml" % "1.12",
+  //"uk.gov.ons" % "sbr-assembler-common" % "0.1-SNAPSHOT",
   "org.scalatest" %% "scalatest" % "2.2.6" % "test",
   "org.apache.hbase" % "hbase-hadoop-compat" % "1.4.2",
   "com.typesafe" % "config" % "1.3.2",

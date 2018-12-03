@@ -12,9 +12,7 @@ import spark.extensions.sql._
 
 object MockCreateNewPeriodHBaseDao extends HBaseDao {
 
-
-
-  override def readTableWithKeyFilter(confs: Configuration, appParams: AppParams, tableName: String, regex: String)(implicit spark: SparkSession) = {
+  override def readTableWithKeyFilter(confs: Configuration, appParams: AppParams, tableName: String, regex: String)(implicit spark: SparkSession): RDD[HFileRow] = {
 
     val res = tableName.split(":").last match {
 
@@ -27,7 +25,7 @@ object MockCreateNewPeriodHBaseDao extends HBaseDao {
     res
   }
 
-  def adjustPathToExistingRecords(path: String) = {
+  def adjustPathToExistingRecords(path: String): String = {
     val pathSeq = path.split("/")
     val res = pathSeq.init :+ "existing" :+ pathSeq.last
     res.mkString("/")

@@ -1,7 +1,5 @@
 package model.domain
 
-import org.apache.hadoop.hbase.Cell
-
 /**
   *
   */

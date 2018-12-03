@@ -2,7 +2,6 @@ package model.domain
 
 import org.apache.spark.sql.Row
 import spark.extensions.sql._
-import scala.util.Try
 
 /**
   * |-- ern: string (nullable = true)

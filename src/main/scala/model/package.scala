@@ -1,7 +1,7 @@
 package model
 
-import org.apache.hadoop.hbase.{HConstants, KeyValue}
 import org.apache.hadoop.hbase.util.Bytes
+import org.apache.hadoop.hbase.{HConstants, KeyValue}
 
 /**
   *

@@ -15,14 +15,12 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import spark.RddLogging
 import spark.extensions.sql._
 
-import scala.reflect.internal.util.TableDef.Column
-
 trait BaseClosure extends HFileUtils with Serializable with RddLogging{
 
   val hbaseDao: HBaseDao = HBaseDao
 
 
-  def createUnitsHfiles(appconf: AppParams)(implicit spark: SparkSession,con:Connection): Unit
+  def createUnitsHfiles(implicit appconf: AppParams, spark: SparkSession,con:Connection): Unit
 
   /**
     * Fields:
@@ -297,8 +295,8 @@ trait BaseClosure extends HFileUtils with Serializable with RddLogging{
 
 
   def calculateWorkingProps(dfWithLegalStatus:DataFrame)(implicit spark: SparkSession) = {
-    import org.apache.spark.sql.functions.udf
     import dfWithLegalStatus.sqlContext.implicits.StringToColumn
+    import org.apache.spark.sql.functions.udf
 
     def calculation = udf((legalStatus: String) => getWorkingPropsByLegalStatus(legalStatus))
 
