@@ -239,7 +239,6 @@ trait HBaseDao extends Serializable {
       .saveAsNewAPIHadoopFile(buildPath(appParams.PATH_TO_LOCALUNITS_HFILE), classOf[ImmutableBytesWritable], classOf[KeyValue], classOf[HFileOutputFormat2], Configs.conf)
 
   }
-
   private def unsetScanner(config: Configuration): Unit = config.unset(TableInputFormat.SCAN)
 
   private def setScanner(config: Configuration, regex: String, appParams: AppParams): Unit = {
